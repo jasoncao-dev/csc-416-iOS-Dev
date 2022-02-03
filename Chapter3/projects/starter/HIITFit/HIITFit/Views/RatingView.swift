@@ -1,4 +1,4 @@
-/// Copyright (c) 2021 Razeware LLC
+/// Copyright (c) 2022 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,55 +31,24 @@
 /// THE SOFTWARE.
 
 import SwiftUI
-import AVKit
 
-struct ExerciseView: View {
-  let videoNames = ["squat", "step-up", "burpee", "sun-salute"]
-  let exerciseNames = ["Squat", "Step Up", "Burpee", "Sun Salute"]
-  let index: Int
-  let interval: TimeInterval = 30
-  @State var isPresented = false
-
-  var body: some View {
-      GeometryReader { geometry in
-          VStack {
-              HeaderView(exerciseName: exerciseNames[index])
-                  .padding(.bottom)
-              if let url = Bundle.main.url(forResource: videoNames[index], withExtension: "mp4") {
-                  VideoPlayer(player: AVPlayer(url: url))
-                      .frame(height: geometry.size.height * 0.45)
-                    
-              } else {
-                  Text("Couldn't find \(videoNames[index]).mp4")
-                      .foregroundColor(.red)
-              }
-              Text(Date().addingTimeInterval(interval), style: .timer)
-                  .font(.system(size: 90))
-                  .foregroundColor(Color.white)
-                  .padding(.all)
-                  .background(Color.black)
-                  .cornerRadius(15)
-                  
-              Button("Start/Done") { }
-                  .font(.title3)
-                  .padding()
-              RatingView()
-                  .padding()
-              Spacer()
-              Button("History") {
-                  isPresented = true
-              }
-              .padding(.bottom)
-              .alert("There is no history to show", isPresented: $isPresented, actions: {})
-          }
-      }
-  }
+struct RatingView: View {
+    var body: some View {
+        HStack {
+            ForEach(0 ..< 5) { _ in
+                Image(systemName: "waveform.path.ecg")
+                    .foregroundColor(.gray)
+                    .font(.largeTitle)
+                    .background(Color(red: 1.0, green: 0.349, blue: 0.349))
+                    .clipShape(Circle())
+            }
+        }
+    }
 }
 
-struct ExerciseView_Previews: PreviewProvider {
-  static var previews: some View {
-    ExerciseView(index: 0)
-  }
+struct RatingView_Previews: PreviewProvider {
+    static var previews: some View {
+        RatingView()
+            .previewLayout(.sizeThatFits)
+    }
 }
-
-
